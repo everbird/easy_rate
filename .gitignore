@@ -4,4 +4,4 @@
 .ropeproject
 build
 dist
-*.egg
+*.egg-info
