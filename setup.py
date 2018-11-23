@@ -9,21 +9,21 @@ setuptools.setup(
     author="Stephen Zhuang",
     author_email="stephen.zhuang@gmail.com",
     description="A small example package",
+    include_package_data=True,
     install_requires=[
         'aiohttp==3.4.4',
         'Click==7.0',
-        'ipython==7.1.1',
         'pandas==0.23.4',
         'tablib==0.12.1',
         'tenacity==5.0.2',
     ],
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/everbird/easy_rate",
+    url="TBD",
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'cli=easy_rate.cli:main',
+            'cli003=easy_rate.cli:main',
         ]
     },
     classifiers=[
