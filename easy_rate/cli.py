@@ -29,7 +29,7 @@ from easy_rate.status import Status
     '-f', '--format',
     type=click.Choice(['csv', 'json', 'yaml', 'xls', 'df']),
     default='df',
-    help='Output format.'
+    help='Output format. Default: df.'
 )
 @click.option(
     '-o', '--output',
@@ -40,7 +40,7 @@ from easy_rate.status import Status
     type=int,
     help=(
         'Value of semaphore to control the concurrency for status fetching.'
-        ' 10 by default.'
+        ' Default: 10.'
     )
 )
 @click.option(
@@ -78,7 +78,7 @@ def main(server_list, verbose, format, concurrent, config_path, output, log_file
     ]
     statuses = Status.get_objs_by_urls(urls, config.schema, concurrent)
     if not statuses:
-        logger.info('No available data to display.')
+        logger.info('No available data.')
         return
 
     report = RateReport(

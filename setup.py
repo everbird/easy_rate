@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.1",
     author="Stephen Zhuang",
     author_email="stephen.zhuang@gmail.com",
-    description="A small example package",
+    description="Just another homework project for fun",
     include_package_data=True,
     install_requires=[
         'aiohttp==3.4.4',
@@ -19,7 +19,7 @@ setuptools.setup(
     ],
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="TBD",
+    url="https://github.com/everbird/easy_rate",
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
@@ -31,4 +31,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    setup_requires=["pytest-runner"],
+    tests_require=["pytest"],
 )
