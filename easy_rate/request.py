@@ -15,7 +15,7 @@ from tenacity.before import before_log
     stop=stop_after_attempt(3),
     before=before_log(logging.getLogger(), logging.DEBUG)
 )
-async def get_json(url):
+async def http_get_json(url):
     logging.debug('Start to send request asynchronously to {}'.format(url))
     conn = aiohttp.TCPConnector(limit=0)
     async with aiohttp.ClientSession(connector=conn) as session:
@@ -27,7 +27,7 @@ async def fetch(semaphore, url):
     async with semaphore:
         logging.debug('Start to fetch {}'.format(url))
         try:
-            r = await get_json(url)
+            r = await http_get_json(url)
         except:
             logging.error(
                 'Failed to fetch data from {}.'

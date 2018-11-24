@@ -7,39 +7,50 @@ from operator import attrgetter
 import tablib
 
 
-class StatusReport(object):
+DEFAULT_RATE_FORMAT = '{:.2%}'
 
-    def __init__(self, statuses):
+
+class RateReport(object):
+    rate_key = 'rate'
+
+    def __init__(self, statuses, keys, denominator, nominator):
         self.statuses = statuses
+        self.keys = keys
+        self.denominator = denominator
+        self.nominator = nominator
 
-    def get_data(self, keys, denominator, nominator):
-        grouped_status_dict = group_statuses(
-            self.statuses,
-            groupby_key=attrgetter(*keys)
-        )
-        return {
-            ktuple: calculate_rate(self.statuses, denominator, nominator)
-            for ktuple, self.statuses in grouped_status_dict.items()
-        }
+    @property
+    def headers(self):
+        return self.keys + [self.rate_key]
 
-    def get_dataset(self, data, headers, rate_format):
+    @property
+    def rate_data(self):
+        r = {}
+        key_func = attrgetter(*self.keys)
+        statuses = sorted(self.statuses, key=key_func)
+        for ktuple, g in groupby(statuses, key_func):
+            r[ktuple] = calculate_rate(
+                list(g),
+                self.denominator,
+                self.nominator
+            )
+        return r
+
+    def render_dataset(self, alias=None, rate_format=DEFAULT_RATE_FORMAT):
+        headers = self.headers
+        if alias:
+            headers = [alias.get(x, x) for x in headers]
+
         dataset = tablib.Dataset(
             headers=headers,
         )
+        data = self.rate_data
         for ktuple in sorted(data.keys()):
             rate = data[ktuple]
             dataset.append(
                 ktuple + (rate_format.format(rate),)
             )
         return dataset
-
-
-def group_statuses(statuses, groupby_key=None):
-    r = {}
-    statuses = sorted(statuses, key=groupby_key)
-    for k, g in groupby(statuses, groupby_key):
-        r[k] = list(g)
-    return r
 
 
 def calculate_rate(statuses, denominator, nominator):

@@ -9,7 +9,7 @@ from pandas import option_context
 
 from easy_rate.config import Config
 from easy_rate.log import setup_logger
-from easy_rate.report import StatusReport
+from easy_rate.report import RateReport
 from easy_rate.status import Status
 
 
@@ -38,7 +38,10 @@ from easy_rate.status import Status
 @click.option(
     '-n', '--concurrent',
     type=int,
-    help='Value of semaphore to control the concurrency for status fetching.'
+    help=(
+        'Value of semaphore to control the concurrency for status fetching.'
+        ' 10 by default.'
+    )
 )
 @click.option(
     '-c', '--config-path',
@@ -62,8 +65,7 @@ def main(server_list, verbose, format, concurrent, config_path, output, log_file
 
     concurrent = concurrent or config.concurrent
     format = format or config.format
-    logger.error('verbose: {}'.format(verbose))
-    logger.warn('verbose: {}'.format(verbose))
+
     logger.info('verbose: {}'.format(verbose))
     logger.info('format: {}'.format(format))
     logger.info('concurrent: {}'.format(concurrent))
@@ -79,13 +81,16 @@ def main(server_list, verbose, format, concurrent, config_path, output, log_file
         logger.info('No available data to display.')
         return
 
-    keys = config.keys
-    report = StatusReport(statuses)
-    data = report.get_data(keys, config.denominator, config.nominator)
-
-    _headers = keys + ['result']
-    headers = [config.header_name_dict.get(x, x) for x in _headers]
-    dataset = report.get_dataset(data, headers, config.rate_format)
+    report = RateReport(
+        statuses,
+        config.keys,
+        config.denominator,
+        config.nominator
+    )
+    dataset = report.render_dataset(
+        config.alias,
+        config.rate_format
+    )
 
     if output:
         write_mode = 'wb' if format == 'xls' else 'w'

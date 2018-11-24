@@ -4,6 +4,8 @@
 import configparser
 import os
 
+from easy_rate.report import DEFAULT_RATE_FORMAT
+
 
 DEFAULT_STATUS_URL_TEMPLATE = 'http://{server}/status'
 
@@ -35,7 +37,7 @@ class Config(object):
     def concurrent(self):
         return int(
             self.config.get(
-                'ARGUMENTS',
+                'QUERY',
                 'concurrent',
                 fallback='10'
             )
@@ -44,25 +46,25 @@ class Config(object):
     @property
     def status_url_template(self):
         return self.config.get(
-            'ARGUMENTS',
+            'QUERY',
             'status_url_template',
             fallback=DEFAULT_STATUS_URL_TEMPLATE
         )
 
     @property
-    def mode(self):
+    def format(self):
         return self.config.get(
-            'ARGUMENTS',
-            'mode',
-            fallback='normal'
+            'REPORT',
+            'format',
+            fallback='df'
         )
 
     @property
     def rate_format(self):
         return self.config.get(
-            'DISPLAY',
+            'REPORT',
             'rate_format',
-            fallback='{:.2%}'
+            fallback=DEFAULT_RATE_FORMAT
         )
 
     @property
@@ -88,8 +90,8 @@ class Config(object):
         )
 
     @property
-    def header_name_dict(self):
-        return dict(self.config['DISPLAY HEADERS'])
+    def alias(self):
+        return dict(self.config['ALIAS'])
 
     @property
     def schema(self):
