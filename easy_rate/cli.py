@@ -23,7 +23,11 @@ from easy_rate.status import Status
 @click.option(
     '-v', '--verbose',
     count=True,
-    help='Verbose. -v for INFO log. -vv for DEBUG log.'
+    help='''Verbose.
+-v\tWARN log.
+-vv\tINFO log.
+-vvv\tDEBUG log.
+-vvvv\tAll the log.'''
 )
 @click.option(
     '-f', '--format',
@@ -56,7 +60,7 @@ from easy_rate.status import Status
     help='Path of log file.'
 )
 def main(server_list, verbose, format, concurrent, config_path, output, log_file):
-    ''' TBD
+    ''' Query a list of servers to generate rate report base on configuration.
     '''
     logger = setup_logger(__name__, verbose=verbose, log_file=log_file)
 

@@ -7,3 +7,5 @@ dist
 *.egg-info
 .coverage
 .eggs
+demo/stubs/*.json
+nohup.out
