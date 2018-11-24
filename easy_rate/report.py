@@ -7,7 +7,7 @@ from operator import attrgetter
 import tablib
 
 
-class ReportView(object):
+class StatusReport(object):
 
     def __init__(self, statuses):
         self.statuses = statuses

@@ -10,11 +10,13 @@ from tenacity import retry
 from tenacity.stop import stop_after_attempt
 from tenacity.before import before_log
 
-from easy_rate.log import logger
 
-
-@retry(stop=stop_after_attempt(3), before=before_log(logger, logging.DEBUG))
+@retry(
+    stop=stop_after_attempt(3),
+    before=before_log(logging.getLogger(), logging.DEBUG)
+)
 async def get_json(url):
+    logging.debug('Start to send request asynchronously to {}'.format(url))
     conn = aiohttp.TCPConnector(limit=0)
     async with aiohttp.ClientSession(connector=conn) as session:
         async with session.get(url) as response:
@@ -23,13 +25,16 @@ async def get_json(url):
 
 async def fetch(semaphore, url):
     async with semaphore:
-        logger.info('Working on {}'.format(url))
+        logging.debug('Start to fetch {}'.format(url))
         try:
             r = await get_json(url)
         except:
-            logger.error('Failed to fetch data from {}. Skipped.'.format(url))
-            logger.debug(traceback.format_exc())
+            logging.error(
+                'Failed to fetch data from {}.'
+                ' Please check debug level log for details.'
+                ' Ignored.'.format(url))
+            logging.debug(traceback.format_exc())
             return
 
-        logger.info('Fetched data from {}'.format(url))
+        logging.debug('Fetched data successfully from {}'.format(url))
         return r

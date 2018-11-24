@@ -7,7 +7,7 @@ import asyncio
 from easy_rate.request import fetch
 
 
-class Entity(dict):
+class Status(dict):
 
     def __init__(self, schema, data):
         self.schema = schema

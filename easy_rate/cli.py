@@ -8,65 +8,95 @@ import click
 from pandas import option_context
 
 from easy_rate.config import Config
-from easy_rate.log import logger
-from easy_rate.view import ReportView
-from easy_rate.model import Entity
+from easy_rate.log import setup_logger
+from easy_rate.report import StatusReport
+from easy_rate.status import Status
 
 
 @click.command()
-@click.option('-L', '--server-list', help='TBD')
-@click.option('-v', '--verbose', count=True, help='TBD')
 @click.option(
-    '-m', '--mode',
+    '-l', '--server-list',
+    required=True,
+    type=click.Path(exists=True, dir_okay=False),
+    help='Server list that report status json.'
+)
+@click.option(
+    '-v', '--verbose',
+    count=True,
+    help='Verbose. -v for INFO log. -vv for DEBUG log.'
+)
+@click.option(
+    '-f', '--format',
     type=click.Choice(['csv', 'json', 'yaml', 'xls', 'df']),
     default='df',
-    help='TBD'
+    help='Output format.'
 )
-@click.option('-o', '--output', default='stdout', help='TBD')
-@click.option('-c', '--concurrent', type=int, help='TBD')
-@click.option('--config-path', help='TBD')
-def main(server_list, verbose, mode, concurrent, config_path, output):
-    print('config_path', config_path)
+@click.option(
+    '-o', '--output',
+    help='Filepath for output file. None as stdout by default.'
+)
+@click.option(
+    '-n', '--concurrent',
+    type=int,
+    help='Value of semaphore to control the concurrency for status fetching.'
+)
+@click.option(
+    '-c', '--config-path',
+    help='''Configuration file path.
+[1] .easy_rate.conf
+[2] ~/.easy_rate.conf
+[3] --config-path
+'''
+)
+@click.option(
+    '--log-file',
+    help='Path of log file.'
+)
+def main(server_list, verbose, format, concurrent, config_path, output, log_file):
+    ''' TBD
+    '''
+    logger = setup_logger(__name__, verbose=verbose, log_file=log_file)
+
     config = Config('easy_rate')
     config.read(config_path)
 
     concurrent = concurrent or config.concurrent
-    mode = mode or config.mode
-    print('mode', mode)
-    print('concurrent', concurrent)
-    print('output', output)
+    format = format or config.format
+    logger.error('verbose: {}'.format(verbose))
+    logger.warn('verbose: {}'.format(verbose))
+    logger.info('verbose: {}'.format(verbose))
+    logger.info('format: {}'.format(format))
+    logger.info('concurrent: {}'.format(concurrent))
+    logger.info('output: {}'.format(output or 'stdout'))
 
     servers = [x.strip() for x in open(server_list)]
     urls = [
         config.status_url_template.format(server=server)
         for server in servers
     ]
-    print('Fetching status from {} urls ...'.format(len(urls)))
-    statuses = Entity.get_objs_by_urls(urls, config.schema, concurrent)
+    statuses = Status.get_objs_by_urls(urls, config.schema, concurrent)
     if not statuses:
-        print('No available data to display.')
+        logger.info('No available data to display.')
         return
 
     keys = config.keys
-    report = ReportView(statuses)
+    report = StatusReport(statuses)
     data = report.get_data(keys, config.denominator, config.nominator)
 
     _headers = keys + ['result']
     headers = [config.header_name_dict.get(x, x) for x in _headers]
     dataset = report.get_dataset(data, headers, config.rate_format)
 
-    if output == 'stdout':
-        if mode == 'df':
-            df = dataset.export(mode)
-            # Pretty table via pandas dataframe
-            with option_context('display.max_rows', None, 'display.max_columns', None):
-                print(df)
-        else:
-            print(dataset.export(mode))
-    else:
-        write_mode = 'wb' if mode == 'xls' else 'w'
+    if output:
+        write_mode = 'wb' if format == 'xls' else 'w'
         with open(output, write_mode) as f:
-            f.write(dataset.export(mode))
+            f.write(dataset.export(format))
+    elif format == 'df':
+        df = dataset.export(format)
+        with option_context('display.max_rows', None, 'display.max_columns', None):
+            print(df)
+    else:
+        print(dataset.export(format))
 
 
 if __name__ == '__main__':
