@@ -21,7 +21,7 @@ class RateReport(object):
 
     @property
     def headers(self):
-        return self.keys + [self.rate_key]
+        return list(self.keys) + [self.rate_key]
 
     @property
     def rate_data(self):
