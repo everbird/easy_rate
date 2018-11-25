@@ -1,5 +1,4 @@
-Easy-rate
-=========
+# Easy-rate
 
 **This is just a homework project for fun**
 
@@ -110,17 +109,55 @@ Say that if you want Error Rate instead of Success Rate in above example, you ca
 
 ```
 
-Installation
-------------
+## Installation
 
-TBD
+```
+python setup.py install
+```
 
-Testing
--------
+## Testing
 
-TBD
+```
+python setup.py test
+```
 
-Setup a Runnable Local Environment
-----------------------------------
+## Run it locally
 
-TBD
+You might don't have a list of server to provide status responses at hand. Fortunately you could run as simple http server to simulate that somehow.
+
+Here are the steps to setup an environment in your local that easy-rate could run.
+
+### STEP 0: Install pyenv
+```
+brew install pyenv
+```
+
+### STEP 1: Create your virtualenv
+```
+make NAME=easy-rate-2 prepare_virutalenv
+```
+
+### STEP 2: Activate your virtualenv
+```
+pyenv activate easy-rate-2
+```
+
+### STEP 3: Run HTTP server
+```
+make nohup_runserver
+```
+
+Make sure http://localhost:8000/ lists JSON files so that we are ready to go.
+
+To Run eady-rate for these, you could use the config/success_rate.conf or you could create your own config. Remeber the `status_url_template` should match to your Simple HTTP Server.
+
+```
+# Install easy-rate first
+python setup.py install
+
+# Export the bin directory for easy-rate in your virtualenv
+export PATH=$PATH:`pyenv virtualenv-prefix easy-rate-2`/envs/easy-rate-2/bin
+
+# And run it!
+easy_rate -l demo/servers.txt -c config/success_rate.conf
+```
