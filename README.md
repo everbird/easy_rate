@@ -136,6 +136,8 @@ brew install pyenv
 ```
 make NAME=easy-rate-2 prepare_virutalenv
 ```
+It will install Python3.7.1, create a virtual environment named `easy-rate-2` and install dependencies from `requirments.txt` by default.
+You can change them using parameter `NAME`, `PYVER` and `REQ`. Please read the Makefile for detail informaiton.
 
 ### STEP 2: Activate your virtualenv
 ```
@@ -146,8 +148,9 @@ pyenv activate easy-rate-2
 ```
 make nohup_runserver
 ```
+It reads the demo/servers.txt and demo/responses.txt to produce json files in demo/stubs directory. Then it starts a simple HTTP server to serve these json files.
 
-Make sure http://localhost:8000/ lists JSON files so that we are ready to go.
+Make sure http://localhost:8000/ lists JSON files.
 
 To Run eady-rate for these, you could use the config/success_rate.conf or you could create your own config. Remeber the `status_url_template` should match to your Simple HTTP Server.
 
