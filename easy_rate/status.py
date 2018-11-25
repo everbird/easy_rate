@@ -3,6 +3,10 @@
 
 
 import asyncio
+from contextlib import closing
+
+import aiohttp
+import tqdm
 
 from easy_rate.request import fetch
 
@@ -23,16 +27,34 @@ class Status(dict):
     @classmethod
     def get_objs_by_urls(cls, urls, schema, concurrent):
         semaphore = asyncio.Semaphore(concurrent)
-        tasks = [
-            asyncio.ensure_future(
-                fetch(semaphore, url)
-            )
+        with closing(asyncio.get_event_loop()) as loop:
+            results = [
+                tgt for tgt in loop.run_until_complete(
+                    async_bulk_fetch(loop, semaphore, urls)
+                )
+            ]
+            return [cls(schema, x) for x in results if x]
+
+
+async def async_bulk_fetch(loop, semaphore, urls):
+    progressbar = tqdm.tqdm(
+        desc='Fetching statuses asynchronously',
+        total=len(urls),
+        unit='reqs',
+    )
+    async with aiohttp.ClientSession(loop=loop) as session:
+        futures = [
+            asyncio.ensure_future(fetch(semaphore, session, url))
             for url in urls
         ]
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(asyncio.wait(tasks))
-        results = (t.result() for t in tasks)
-        return [cls(schema, x) for x in results if x]
+        def callback(future):
+            if future.result():
+                progressbar.update()
+
+        for f in futures:
+            f.add_done_callback(callback)
+
+        return await asyncio.gather(*futures)
 
 
 def get_value_by_dpath(dictionary, dpath):

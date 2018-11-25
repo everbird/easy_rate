@@ -124,9 +124,9 @@ python setup.py test
 
 ## Run it locally
 
-You might don't have a list of server to provide status responses at hand. Fortunately you could run as simple http server to simulate that somehow.
+You might don't have a list of server to provide status responses at hand. Fortunately you could run a simple http server to simulate that somehow.
 
-Here are the steps to setup an environment in your local that easy-rate could run.
+Here are the steps to setup an environment in your local that easy-rate could run with.
 
 ### STEP 0: Install pyenv
 ```
