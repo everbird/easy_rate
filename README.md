@@ -4,7 +4,7 @@
 
 Easy-rate is a configurable command-line tool to generate rate report easily. Basically it queries server statuses concurrently/calculates rate/generates report as you might expect, but all in a configurable manner.
 
-![image](https://www.dropbox.com/s/1onl1vauwtol20b/screwdriver-set.jpg)
+![image](https://farm5.staticflickr.com/4866/45126867315_57429cbe01_k.jpg)
 
 The power of Easy-rate:
 
