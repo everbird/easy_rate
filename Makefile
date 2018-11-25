@@ -18,7 +18,7 @@ install:
 	python setup.py install
 
 clean:
-	rm -rf build dist easy_rate.egg-info
+	rm -rf build dist easy_rate.egg-info nohup.out demo/stubs/*.json
 
 PYVER ?= 3.7.1
 REQ ?= requirements.txt
