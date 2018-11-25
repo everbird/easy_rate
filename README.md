@@ -1,9 +1,10 @@
-# Easy-rate
+# Easy-rate: Configurable Command-line Rate Report for Server Status
 
 **This is just a homework project for fun**
 
-Easy-rate is a configurable command-line tool to make generating rate report easy. Basically it queries server statuses/calculates rate/generates report as you might expect, but all in a configurable manner.
+Easy-rate is a configurable command-line tool to generate rate report easily. Basically it queries server statuses concurrently/calculates rate/generates report as you might expect, but all in a configurable manner.
 
+![image](https://www.dropbox.com/s/1onl1vauwtol20b/screwdriver-set.jpg)
 
 The power of Easy-rate:
 
@@ -150,7 +151,7 @@ make nohup_runserver
 ```
 It reads the demo/servers.txt and demo/responses.txt to produce json files in demo/stubs directory. Then it starts a simple HTTP server to serve these json files.
 
-Make sure http://localhost:8000/ lists JSON files.
+Make sure http://localhost:8000/ lists the JSON files.
 
 To Run eady-rate for these, you could use the config/success_rate.conf or you could create your own config. Remeber the `status_url_template` should match to your Simple HTTP Server.
 
