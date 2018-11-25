@@ -1,4 +1,4 @@
-# Easy-rate: Configurable Command-line Rate Report for Server Status
+# Easy-rate: Configurable Command-line Rate Report for Server Statuses
 
 **This is just a homework project for fun**
 

@@ -4,6 +4,7 @@
 import logging
 
 import click
+import tqdm
 
 from pandas import option_context
 
@@ -59,7 +60,21 @@ from easy_rate.status import Status
     '--log-file',
     help='Path of log file.'
 )
-def main(server_list, verbose, format, concurrent, config_path, output, log_file):
+@click.option(
+    '--progress/--no-progress',
+    default=True,
+    help='Show progress bar or not.'
+)
+def main(
+    server_list,
+    verbose,
+    format,
+    concurrent,
+    config_path,
+    output,
+    log_file,
+    progress
+):
     ''' Query a list of servers to generate rate report base on configuration.
     '''
     logger = setup_logger(__name__, verbose=verbose, log_file=log_file)
@@ -74,13 +89,33 @@ def main(server_list, verbose, format, concurrent, config_path, output, log_file
     logger.info('format: {}'.format(format))
     logger.info('concurrent: {}'.format(concurrent))
     logger.info('output: {}'.format(output or 'stdout'))
+    logger.info('progress'.format(progress))
 
     servers = [x.strip() for x in open(server_list)]
     urls = [
         config.status_url_template.format(server=server)
         for server in servers
     ]
-    statuses = Status.get_objs_by_urls(urls, config.schema, concurrent)
+    if progress:
+        progressbar = tqdm.tqdm(
+            desc='Fetching Statuses',
+            total=len(urls),
+            unit='reqs'
+        )
+        def _callback(future):
+            if future.result():
+                progressbar.update()
+
+        callback = _callback
+    else:
+        callback = None
+
+    statuses = Status.get_objs_by_urls(
+        urls,
+        config.schema,
+        concurrent,
+        callback
+    )
     if not statuses:
         logger.info('No available data.')
         return

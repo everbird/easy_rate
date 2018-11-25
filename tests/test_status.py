@@ -36,7 +36,7 @@ class TestStatus(unittest.TestCase):
             'http://localhost/b': {'Apple': 2},
         }
         async def f(*args, **kwargs):
-            url = args[1]
+            url = args[2]
             return URL_RESULT_DATA[url]
 
         mock_fetch.side_effect = f
