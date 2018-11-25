@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="easy_rate",
-    version="0.0.1",
+    version="0.1.0",
     author="Stephen Zhuang",
     author_email="stephen.zhuang@gmail.com",
     description="Just another homework project for fun",
