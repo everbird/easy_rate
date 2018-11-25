@@ -23,7 +23,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'easy_rate=easy_rate.cli:main',
+            'easy-rate=easy_rate.cli:main',
         ]
     },
     classifiers=[

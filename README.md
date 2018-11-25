@@ -52,7 +52,7 @@ format = df
 app = Application
 version = Version
 rate = Success Rate
-(easy-rate-1) ➜  easy_rate git:(master) ✗ easy_rate -l demo/servers.txt -c config/success_rate.conf
+(easy-rate-1) ➜  easy_rate git:(master) ✗ easy-rate -l demo/servers.txt -c config/success_rate.conf
     Application Version Success Rate
 0        Cache0   0.0.1       59.36%
 1        Cache0   0.0.2       54.74%
@@ -62,7 +62,7 @@ rate = Success Rate
 159     Webapp2   1.2.0       61.90%
 160     Webapp2   1.2.1       55.99%
 161     Webapp2   1.2.2       38.68%
-(easy-rate-1) ➜  easy_rate git:(master) ✗ easy_rate -l demo/servers.txt -c config/success_rate.conf -f csv -o /tmp/success-rate-report.csv
+(easy-rate-1) ➜  easy_rate git:(master) ✗ easy-rate -l demo/servers.txt -c config/success_rate.conf -f csv -o /tmp/success-rate-report.csv
 (easy-rate-1) ➜  easy_rate git:(master) ✗ head -n 10 /tmp/success-rate-report.csv
 Application,Version,Success Rate
 Cache0,0.0.1,59.36%
@@ -96,7 +96,7 @@ Say that if you want Error Rate instead of Success Rate in above example, you ca
 < rate = Success Rate
 ---
 > rate = Error Rate
-(easy-rate-1) ➜  easy_rate git:(master) ✗ easy_rate -l demo/servers.txt -c config/error_rate.conf
+(easy-rate-1) ➜  easy_rate git:(master) ✗ easy-rate -l demo/servers.txt -c config/error_rate.conf
     Application Version Error Rate
 0        Cache0   0.0.1     40.64%
 1        Cache0   0.0.2     45.26%
@@ -162,5 +162,5 @@ python setup.py install
 export PATH=$PATH:`pyenv virtualenv-prefix easy-rate-2`/envs/easy-rate-2/bin
 
 # And run it!
-easy_rate -l demo/servers.txt -c config/success_rate.conf
+easy-rate -l demo/servers.txt -c config/success_rate.conf
 ```
