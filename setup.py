@@ -16,6 +16,7 @@ setuptools.setup(
         'pandas==0.23.4',
         'tablib==0.12.1',
         'tenacity==5.0.2',
+        'tqdm==4.28.1',
     ],
     long_description=long_description,
     long_description_content_type="text/markdown",

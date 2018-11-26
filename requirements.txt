@@ -4,3 +4,4 @@ ipython==7.1.1
 pandas==0.23.4
 tablib==0.12.1
 tenacity==5.0.2
+tqdm==4.28.1
