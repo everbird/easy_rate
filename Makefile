@@ -9,7 +9,7 @@ nohup_runserver:
 	nohup python -u demo/run-stub-server.py -l demo/servers.txt -r demo/responses.txt -t demo/stubs 2>&1 &
 
 stopserver:
-	pgrep -f "python ./demo/run-stub-server.py" | xargs kill
+	pgrep -f "run-stub-server.py" | xargs kill
 
 build:
 	python setup.py build
