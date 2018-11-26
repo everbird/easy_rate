@@ -53,6 +53,33 @@ format = df
 app = Application
 version = Version
 rate = Success Rate
+(easy-rate-1) ➜  easy_rate git:(master) easy-rate --help
+Usage: easy-rate [OPTIONS]
+
+  Query a list of servers to generate rate report base on configuration.
+
+Options:
+  -l, --server-list FILE          Server list that report status json.
+                                  [required]
+  -v, --verbose                   Verbose.
+                                  -v      WARN log.
+                                  -vv     INFO log.
+                                  -vvv    DEBUG log.
+                                  -vvvv   All the log.
+  -f, --format [csv|json|yaml|xls|df]
+                                  Output format. Default: df.
+  -o, --output TEXT               Filepath for output file. None as stdout by
+                                  default.
+  -n, --concurrent INTEGER        Value of semaphore to control the
+                                  concurrency for status fetching. Default:
+                                  10.
+  -c, --config-path TEXT          Configuration file path.
+                                  [1] .easy_rate.conf
+                                  [2] ~/.easy_rate.conf
+                                  [3] --config-path
+  --log-file TEXT                 Path of log file.
+  --progress / --no-progress      Show progress bar or not.
+  --help                          Show this message and exit.
 (easy-rate-1) ➜  easy_rate git:(master) ✗ easy-rate -l demo/servers.txt -c config/success_rate.conf
     Application Version Success Rate
 0        Cache0   0.0.1       59.36%
