@@ -132,6 +132,7 @@ Here are the steps to setup an environment in your local that easy-rate could ru
 ```
 brew install pyenv
 ```
+Please refer to https://github.com/pyenv/pyenv#installation for pyenv installation.
 
 ### STEP 1: Create your virtualenv
 ```
