@@ -1,6 +1,6 @@
 # Easy-rate: Configurable Command-line Rate Report for Server Statuses
 
-**This is just a homework project for fun**
+**This is just a homework project for fun. Please run it in Python 3.7 or above**
 
 Easy-rate is a configurable command-line tool to generate rate report easily. Basically it queries server statuses concurrently/calculates rate/generates report as you might expect, but all in a configurable manner.
 
